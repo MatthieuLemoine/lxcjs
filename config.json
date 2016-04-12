@@ -1,0 +1,4 @@
+{
+  "lxc_path" : "~/.local/share/lxc",
+  "lxc_commands_path" : "/usr/bin"
+}
