@@ -3,16 +3,17 @@
 
 const config = require('./config.json');
 const lxc    = require('./index.js')(config);
+const chalk  = require('chalk');
 
 lxc
   .status()
-  .then(console.log('After Status 1'))
-  .then(lxc.start('genius'))
-  .then(console.log('After start'))
-  .then(() => lxc.status)
-  .then(console.log('After status 2'))
-  .then(lxc.stop('genius'))
-  .then(console.log('After stop'))
-  .then(() => lxc.status)
-  .then(console.log('After status3'))
-  .catch(console.log);
+  .then(out => process.stdout.write(out))
+  .then(() => lxc.start('genius'))
+  .then(out => process.stdout.write(chalk.green(`${out}\n`)))
+  .then(lxc.status)
+  .then(out => process.stdout.write(out))
+  .then(() => lxc.stop('genius'))
+  .then(out => process.stdout.write(chalk.green(`${out}\n`)))
+  .then(lxc.status)
+  .then(out => process.stdout.write(out))
+  .catch(out => process.stdout.write(chalk.red(`${out}\n`)));
