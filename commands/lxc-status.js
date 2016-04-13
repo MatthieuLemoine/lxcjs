@@ -1,11 +1,10 @@
-#!/usr/bin/env node
 'use strict';
 
 const sh     = require('shelljs');
 const chalk  = require('chalk');
 const exec   = require('child_process').execSync;
 
-module.exports = function lxcStatusCommand(config) {
+module.exports = config => {
   const containers = sh.ls(config.lxc_path);
   let out = 'Id\tIp Addr\t\tState\t\tHostname\n';
   containers.forEach((container, index) => {
@@ -14,7 +13,7 @@ module.exports = function lxcStatusCommand(config) {
         `${++index}\t${ip(container)}\t${state(container)}\t\t${hostname(container)}\n`;
     }
   });
-  return out;
+  return Promise.resolve(out);
 
   function ip(container) {
     let str = sh.cat(`${config.lxc_path}/${container}/config`).grep('ipv4');

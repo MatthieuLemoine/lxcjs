@@ -1,6 +1,7 @@
-#!/usr/bin/env node
 'use strict';
 
-const config = require('./config.json');
-
-process.stdout.write(require('./commands/lxc-status.js')(config));
+module.exports = config => {
+  status : require('./commands/lxc-status.js')(config),
+  start  : container => require('./commands/lxc-start.js')(container, config),
+  stop   : container => require('./commands/lxc-stop.js')(container, config),
+};

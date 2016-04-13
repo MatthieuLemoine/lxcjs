@@ -4,12 +4,32 @@ A Node JS wrapper around lxc commands.
 
 ## Install
 
-    npm i
+    npm i --save MatthieuLemoine/lxcjs
 
-## Run
+## Test
 
-    ./index.js
+    ./test.js
 
-## Commands
+## Usage
 
-- lxc-status : Display all containers status
+```javascript
+const config = require('./config.json');
+const lxc    = require('lxcjs')(config);
+
+// Containers status
+lxc
+    .status
+    .then(out => process.stdout.write(out));
+
+// Container start
+lxc
+    .start(containerName)
+    .then(out => process.stdout.write(out))
+    .catch(err => process.stderr.write(err));
+
+// Container stop
+lxc
+    .stop(containerName)
+    .then(out => process.stdout.write(out))
+    .catch(err => process.stderr.write(err));
+```
