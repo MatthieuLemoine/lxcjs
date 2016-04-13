@@ -1,5 +1,5 @@
 {
-  "name": "lxc",
+  "name": "lxcjs",
   "version": "0.0.1",
   "description": "A Node JS wrapper around lxc commands",
   "main": "index.js",
