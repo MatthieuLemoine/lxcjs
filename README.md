@@ -33,3 +33,11 @@ lxc
     .then(out => process.stdout.write(out))
     .catch(err => process.stderr.write(err));
 ```
+
+With config.json contains following informations :
+
+
+    {
+        "lxc_path" : "/path/to/containers/directory",
+        "lxc_commands_path" : "/path/to/lxc/commands/directory"
+    }
