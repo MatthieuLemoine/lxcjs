@@ -2,6 +2,17 @@
 'use strict';
 
 const config = require('./config.json');
+const lxc    = require('./index.js')(config);
 
-require('./commands/lxc-status')(config)
-  .then(out => process.stdout.write(out));
+lxc
+  .status()
+  .then(console.log('After Status 1'))
+  .then(lxc.start('genius'))
+  .then(console.log('After start'))
+  .then(() => lxc.status)
+  .then(console.log('After status 2'))
+  .then(lxc.stop('genius'))
+  .then(console.log('After stop'))
+  .then(() => lxc.status)
+  .then(console.log('After status3'))
+  .catch(console.log);

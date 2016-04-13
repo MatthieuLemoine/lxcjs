@@ -13,6 +13,7 @@ module.exports = config => {
         `${++index}\t${ip(container)}\t${state(container)}\t\t${hostname(container)}\n`;
     }
   });
+  console.log('resolve status');
   return Promise.resolve(out);
 
   function ip(container) {
