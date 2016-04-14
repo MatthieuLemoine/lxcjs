@@ -1,6 +1,6 @@
 {
   "name": "lxcjs",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A Node JS wrapper around lxc commands",
   "main": "index.js",
   "scripts": {
