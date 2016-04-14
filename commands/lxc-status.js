@@ -6,11 +6,11 @@ const exec   = require('child_process').execSync;
 
 module.exports = config => {
   const containers = sh.ls(config.lxc_path);
-  let out = 'Id\tIp Addr\t\tState\t\tHostname\n';
+  let out = 'Id\tIp Addr\t\tState\t\tHostname';
   containers.forEach((container, index) => {
     if (sh.test('-e', `${config.lxc_path}/${container}/config`)) {
       out +=
-        `${++index}\t${ip(container)}\t${state(container)}\t\t${hostname(container)}\n`;
+        `\n${++index}\t${ip(container)}\t${state(container)}\t\t${hostname(container)}`;
     }
   });
   return Promise.resolve(out);
