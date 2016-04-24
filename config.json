@@ -1,4 +1,4 @@
 {
-  "lxc_path" : "/home/matthieu/.local/share/lxc",
+  "lxc_path" : "/var/lib/lxc",
   "lxc_commands_path" : "/usr/bin"
 }
