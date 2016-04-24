@@ -3,20 +3,29 @@
 const sh     = require('shelljs');
 const chalk  = require('chalk');
 const exec   = require('child_process').execSync;
+const Table  = require('cli-table2');
 
 module.exports = config => {
   const containers = sh.ls(config.lxc_path);
-  let out = 'Id\tIp Addr\t\tState\t\tHostname';
+  const table = new Table({
+    head : [
+      'Id',
+      'Hostname',
+      'Ip Addr',
+      'State',
+    ],
+    colWidths : [5, 25, 20, 10],
+  });
   containers.forEach((container, index) => {
     if (sh.test('-e', `${config.lxc_path}/${container}/config`)) {
-      out +=
-        `\n${++index}\t${ip(container)}\t${state(container)}\t\t${hostname(container)}`;
+      table.push([++index, hostname(container), ip(container), state(container)]);
     }
   });
-  return Promise.resolve(out);
+  return Promise.resolve(table.toString());
 
   function ip(container) {
-    let str = sh.cat(`${config.lxc_path}/${container}/config`).grep('ipv4');
+    let str = sh.cat(`${config.lxc_path}/${container}/config`);
+    str = grep(str, 'ipv4');
     str = str.substring(0, str.length - 1);
     if (str.length) {
       return str.split(' ').pop();
@@ -34,11 +43,20 @@ module.exports = config => {
   }
 
   function hostname(container) {
-    let str = sh.cat(`${config.lxc_path}/${container}/config`).grep('utsname');
+    let str = sh.cat(`${config.lxc_path}/${container}/config`);
+    str = grep(str, 'utsname');
     str = str.substring(0, str.length - 1);
     if (str.length) {
       return str.split(' ').pop();
     }
     return 'no-hostname';
+  }
+
+  // FIXME waiting for pipes in shelljs to land on npm
+  function grep(str, pattern) {
+    return str
+      .split('\n')
+      .filter(line => line.indexOf(pattern))
+      .join('\n');
   }
 };

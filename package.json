@@ -23,6 +23,7 @@
   "homepage": "https://github.com/MatthieuLemoine/lxcjs#readme",
   "dependencies": {
     "chalk": "^1.1.3",
-    "shelljs": "shelljs/shelljs"
+    "cli-table2": "^0.2.0",
+    "shelljs": "^0.6.0"
   }
 }
