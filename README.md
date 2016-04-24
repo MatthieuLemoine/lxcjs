@@ -1,4 +1,6 @@
 # lxcjs
+[![npm](https://img.shields.io/npm/v/lxcjs.svg)]()
+[![dependencies](https://david-dm.org/MatthieuLemoine/lxcjs.png)](https://david-dm.org/MatthieuLemoine/lxcjs.png)
 
 A Node JS wrapper around lxc commands.
 
