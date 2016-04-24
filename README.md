@@ -4,7 +4,7 @@ A Node JS wrapper around lxc commands.
 
 ## Install
 
-    npm i --save MatthieuLemoine/lxcjs
+    npm i --save lxcjs
 
 ## Test
 
@@ -34,7 +34,7 @@ lxc
     .catch(err => process.stderr.write(err));
 ```
 
-With config.json contains following informations :
+With config.json providing following informations :
 
 
     {
