@@ -26,7 +26,6 @@ module.exports = config => {
   function ip(container) {
     let str = sh.cat(`${config.lxc_path}/${container}/config`);
     str = grep(str, 'ipv4');
-    str = str.substring(0, str.length - 1);
     if (str.length) {
       return str.split(' ').pop();
     }
@@ -45,7 +44,6 @@ module.exports = config => {
   function hostname(container) {
     let str = sh.cat(`${config.lxc_path}/${container}/config`);
     str = grep(str, 'utsname');
-    str = str.substring(0, str.length - 1);
     if (str.length) {
       return str.split(' ').pop();
     }
@@ -56,7 +54,7 @@ module.exports = config => {
   function grep(str, pattern) {
     return str
       .split('\n')
-      .filter(line => line.indexOf(pattern))
+      .filter(line => line.indexOf(pattern) > -1)
       .join('\n');
   }
 };
