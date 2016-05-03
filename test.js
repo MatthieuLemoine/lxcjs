@@ -12,6 +12,8 @@ lxc
   .then(out => process.stdout.write(chalk.green(`${out}\n`)))
   .then(lxc.status)
   .then(out => process.stdout.write(`${out}\n`))
+  .then(() => lxc.utils().getRunningContainers())
+  .then(out => process.stdout.write(`${out}\n`))
   .then(() => lxc.stop('genius'))
   .then(out => process.stdout.write(chalk.green(`${out}\n`)))
   .then(lxc.status)
