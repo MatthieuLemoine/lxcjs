@@ -34,6 +34,27 @@ lxc
     .stop(containerName)
     .then(out => process.stdout.write(out))
     .catch(err => process.stderr.write(err));
+
+// Get all containers
+lxc
+    .util
+    .getContainers()
+    .then(out => process.stdout.write(out))
+    .catch(err => process.stderr.write(err));
+
+// Get running containers
+lxc
+    .util
+    .getRunningContainers()
+    .then(out => process.stdout.write(out))
+    .catch(err => process.stderr.write(err));
+
+// Get stopped containers
+lxc
+    .util
+    .getStoppedContainers()
+    .then(out => process.stdout.write(out))
+    .catch(err => process.stderr.write(err));
 ```
 
 With config.json providing following informations :

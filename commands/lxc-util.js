@@ -2,6 +2,7 @@
 
 const sh   = require('shelljs');
 const exec = require('child_process').execSync;
+const fs   = require('fs');
 
 module.exports = config => ({
   getContainers        : () => getContainers(config),
@@ -10,21 +11,36 @@ module.exports = config => ({
 });
 
 function getContainers(config) {
-  return sh
-    .ls(config.lxc_path)
-    .filter(container => sh.test('-e', `${config.lxc_path}/${container}/config`));
+  return new Promise((resolve, reject) => {
+    // Has read access ?
+    fs.access(config.lxc_path, fs.R_OK, err => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(
+        sh.ls(config.lxc_path)
+        .filter(container => sh.test('-e', `${config.lxc_path}/${container}/config`))
+      );
+    });
+  });
 }
 
 function getRunningContainers(config) {
-  let containers = getContainers(config);
-  containers = containers.filter(container => isRunning(container, config));
-  return Promise.resolve(containers);
+  return getContainers(config)
+    .then(containers =>
+      containers.filter(
+        container => isRunning(container, config)
+      )
+    );
 }
 
 function getStoppedContainers(config) {
-  let containers = getContainers(config);
-  containers = containers.filter(container => isStopped(container, config));
-  return Promise.resolve(containers);
+  return getContainers(config)
+    .then(containers =>
+      containers.filter(
+        container => isStopped(container, config)
+      )
+    );
 }
 
 

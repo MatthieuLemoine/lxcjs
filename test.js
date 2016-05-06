@@ -5,9 +5,10 @@ const config = require('./config.json');
 const lxc    = require('./index.js')(config);
 const chalk  = require('chalk');
 
-print(lxc.util.getContainers());
-
-lxc.util.getRunningContainers()
+lxc.util
+  .getContainers()
+  .then(print)
+  .then(lxc.util.getRunningContainers)
   .then((out) => print(out, chalk.green))
   .then(lxc.util.getStoppedContainers)
   .then((out) => print(out, chalk.red))
