@@ -1,13 +1,18 @@
 'use strict';
 
-const sh   = require('shelljs');
-const exec = require('child_process').execSync;
-const fs   = require('fs');
+const sh    = require('shelljs');
+const exec  = require('child_process').execSync;
+const fs    = require('fs');
+const chalk = require('chalk');
 
 module.exports = config => ({
-  getContainers        : () => getContainers(config),
-  getRunningContainers : () => getRunningContainers(config),
-  getStoppedContainers : () => getStoppedContainers(config),
+  getContainers        : ()          => getContainers(config),
+  getHostname          : (container) => getHostname(container, config),
+  getIp                : (container) => getIp(container, config),
+  getRunningContainers : ()          => getRunningContainers(config),
+  getState             : (container) => getState(container, config),
+  getStateWithColor    : (container) => getState(container, config),
+  getStoppedContainers : ()          => getStoppedContainers(config),
 });
 
 function getContainers(config) {
@@ -60,4 +65,43 @@ function isStopped(container, config) {
     return true;
   }
   return false;
+}
+
+function getIp(container, config) {
+  let str = sh.cat(`${config.lxc_path}/${container}/config`);
+  str = grep(str, 'ipv4');
+  if (str.length) {
+    return str.split(' ').pop();
+  }
+  return '127.0.0.1';
+}
+
+function getHostname(container, config) {
+  let str = sh.cat(`${config.lxc_path}/${container}/config`);
+  str = grep(str, 'utsname');
+  if (str.length) {
+    return str.split(' ').pop();
+  }
+  return 'no-hostname';
+}
+
+function getState(container, config) {
+  const stdout = exec(`${config.lxc_commands_path}/lxc-info -n ${container}`).toString('utf8');
+  return stdout.split('\n')[1].split(' ').pop();
+}
+
+function getStateWithColor(container, config) {
+  const state = getState(container, config);
+  if (state === 'RUNNING') {
+    return chalk.green(state);
+  }
+  return chalk.red(state);
+}
+
+// FIXME waiting for pipes in shelljs to land on npm
+function grep(str, pattern) {
+  return str
+    .split('\n')
+    .filter(line => line.indexOf(pattern) > -1)
+    .join('\n');
 }
