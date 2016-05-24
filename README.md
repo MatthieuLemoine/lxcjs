@@ -55,6 +55,18 @@ lxc
     .getStoppedContainers()
     .then(out => process.stdout.write(out))
     .catch(err => process.stderr.write(err));
+
+// Get informations on a container
+lxc
+    .info(container)
+    .then(info => {
+        process.stdout.write(`Name : ${info.name}\n`);
+        process.stdout.write(`State : ${info.state}\n`);
+        process.stdout.write(`Host : ${info.host}\n`);
+        process.stdout.write(`Ip : ${info.ip}\n`);
+    })
+    .catch(err => process.stderr.write(err));
+
 ```
 
 With config.json providing following informations :
